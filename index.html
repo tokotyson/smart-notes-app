@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Notes App</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        textarea {
+            width: 90%;
+            height: 100px;
+        }
+        button {
+            margin: 5px;
+            padding: 8px;
+        }
+        .note {
+            background: #eee;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🧠 Smart Notes App</h2>
+
+    <textarea id="noteInput" placeholder="Write your note..."></textarea><br>
+
+    <button onclick="saveNote()">Save</button>
+    <button onclick="summarize()">Summarize</button>
+
+    <h3>Summary:</h3>
+    <p id="summary"></p>
+
+    <h3>Saved Notes:</h3>
+    <div id="notes"></div>
+</div>
+
+<script>
+    let notes = JSON.parse(localStorage.getItem("notes")) || [];
+
+    function saveNote() {
+        let text = document.getElementById("noteInput").value;
+        if (!text) return;
+
+        notes.push(text);
+        localStorage.setItem("notes", JSON.stringify(notes));
+        document.getElementById("noteInput").value = "";
+        displayNotes();
+    }
+
+    function summarize() {
+        let text = document.getElementById("noteInput").value;
+
+        // Simple AI-like summary (first sentence)
+        let summary = text.split(".")[0] + ".";
+        document.getElementById("summary").innerText = summary;
+    }
+
+    function displayNotes() {
+        let container = document.getElementById("notes");
+        container.innerHTML = "";
+
+        notes.forEach(note => {
+            let div = document.createElement("div");
+            div.className = "note";
+            div.innerText = note;
+            container.appendChild(div);
+        });
+    }
+
+    displayNotes();
+</script>
+
+</body>
+</html>
